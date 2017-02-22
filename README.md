@@ -1,1 +1,1 @@
-# CACrypt
+# CACrypt is nodejs package to perform encryption / decryption
