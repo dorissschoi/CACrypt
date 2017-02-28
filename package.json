@@ -15,10 +15,13 @@
     "sails": "^0.12.11",
     "stream-to-string": "^1.1.0",
     "supertest": "^3.0.0",
-    "supertest-as-promised": "^4.0.2"
+    "supertest-as-promised": "^4.0.2",
+    "mocha": "^3.1.2",
+    "chai": "^3.5.0",
+    "keypair": "^1.0.1"
   },
   "scripts": {
-    "test": "mocha test/bootstrap.test.coffee test/unit/*.coffee"
+  	"test": "./node_modules/.bin/mocha test/*.coffee"
   },
   "main": "node_modules/.bin/coffee index.coffee",
   "repository": {
