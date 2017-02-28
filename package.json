@@ -1,9 +1,8 @@
 {
   "name": "CACrypt",
-  "private": true,
   "version": "0.0.1",
   "description": "A Nodejs package for encrypt / decrypt text",
-  "keywords": [],
+  "main": "index.js",
   "dependencies": {
     "bluebird": "^3.3.4",
     "coffee-script": "^1.10.0",
@@ -23,11 +22,10 @@
   "scripts": {
   	"test": "./node_modules/.bin/mocha test/*.coffee"
   },
-  "main": "node_modules/.bin/coffee index.coffee",
   "repository": {
     "type": "git",
-    "url": "git://github.com/jokyip/CACrypt.git"
+    "url": "git://github.com/ewnchui/CACrypt.git"
   },
   "author": "jokyip",
-  "license": ""
+  "license": "MIT"
 }
