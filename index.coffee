@@ -36,8 +36,8 @@ module.exports = (opts = {}) ->
 		encryptedMessage = bundle.encryptedMessage			
 		encryptedKey = bundle.encryptedKey
 		
-		# Get receiver public key
-		privateKey = forge.pki.privateKeyFromPem(forge.util.createBuffer prikey)
+		# Get receiver private key
+		privateKey = forge.pki.privateKeyFromPem(prikey)
 		
 		# Decrypt symmetric key with receiver private key
 		key = privateKey.decrypt encryptedKey
@@ -50,5 +50,6 @@ module.exports = (opts = {}) ->
 			Promise.reject new Error 'Decryption failed'
 		Promise.resolve cipher.output.getBytes()
 
-
-												
+		
+		
+		
