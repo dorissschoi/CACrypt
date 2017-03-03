@@ -1,7 +1,7 @@
 {
   "name": "cacrypt",
   "version": "0.0.5",
-  "description": "A Nodejs package for encrypt / decrypt text",
+  "description": "A Nodejs package for encrypt/decrypt, sign/verify text",
   "main": "index.js",
   "dependencies": {
     "bluebird": "^3.3.4",
