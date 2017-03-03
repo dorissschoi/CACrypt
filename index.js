@@ -34,7 +34,7 @@
         var cipher, encryptedKey, encryptedMessage, key, privateKey;
         encryptedMessage = bundle.encryptedMessage;
         encryptedKey = bundle.encryptedKey;
-        privateKey = forge.pki.privateKeyFromPem(forge.util.createBuffer(prikey));
+        privateKey = forge.pki.privateKeyFromPem(prikey);
         key = privateKey.decrypt(encryptedKey);
         cipher = forge.cipher.createDecipher(opts.algorithm, key);
         cipher.start({
@@ -45,6 +45,25 @@
           Promise.reject(new Error('Decryption failed'));
         }
         return Promise.resolve(cipher.output.getBytes());
+      },
+      sign: function(prikey, message) {
+        var md, privateKey, signature;
+        privateKey = forge.pki.privateKeyFromPem(prikey);
+        md = forge.md.sha256.create();
+        md.update(message, 'utf8');
+        signature = privateKey.sign(md);
+        return Promise.resolve({
+          md: md,
+          signature: signature
+        });
+      },
+      verify: function(pubkey, bundle) {
+        var md, publicKey, signature, verified;
+        md = bundle.md;
+        signature = bundle.signature;
+        publicKey = forge.pki.publicKeyFromPem(pubkey);
+        verified = publicKey.verify(md.digest().bytes(), signature);
+        return Promise.resolve(verified);
       }
     };
   };

@@ -50,6 +50,30 @@ module.exports = (opts = {}) ->
 			Promise.reject new Error 'Decryption failed'
 		Promise.resolve cipher.output.getBytes()
 
+	# Defaults Alogrithm to RSASSA PKCS #1 v1.5 	
+	sign: (prikey, message) ->
+		# Get receiver private key
+		privateKey = forge.pki.privateKeyFromPem prikey
 		
+		# sign data with a private key
+		md = forge.md.sha256.create();
+		md.update message, 'utf8'
+		signature = privateKey.sign md
+		
+		Promise.resolve {
+			md: md
+			signature: signature
+		}
+		
+	verify: (pubkey, bundle) ->
+		md = bundle.md
+		signature = bundle.signature
+	
+		# Get receiver public key
+		publicKey = forge.pki.publicKeyFromPem pubkey
+		
+		# Verify data with a public key
+		verified = publicKey.verify md.digest().bytes(), signature
+		Promise.resolve verified		
 		
 		

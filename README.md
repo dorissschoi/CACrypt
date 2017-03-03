@@ -1,6 +1,6 @@
 CACrypt
 =======
-# CACrypt is nodejs package to perform encryption / decryption
+# CACrypt is nodejs package to perform encryption/decryption, signing/verifying. 
 
 ## Installation
 ```
@@ -26,6 +26,8 @@ cacrypt = require('../index.coffee')(env)
 ```
 - cacrypt.encrypt *publickey* *message*
 - cacrypt.decrypt *privatekey* *bundlewithmessage&key*
+- cacrypt.sign *privatekey* *message*
+- cacrypt.verify *publickey* *bundlewithmd&signature*
 
 ```
 ## Test
