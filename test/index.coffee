@@ -1,40 +1,36 @@
-env = require('../env.coffee')
-cacrypt = require('../index.coffee')(env)
+cacrypt = require('../index.coffee')()
 expect = require('chai').expect
 keypair = require 'keypair'
 pair = keypair()
 bundle = {}
 
+message = 'testing'
+
 describe '#Encryption ', ->
 	it 'Encryption ', (done) ->
-		cacrypt.encrypt(pair.public, env.message)
-			.then (data) ->
-				expect(data).to.exist
-				bundle = data
-				done()	
+		bundle = cacrypt.encrypt(pair.public, message)		
+		expect(bundle).to.exist
+		done()
 		return
 
 describe '#Decryption ', ->		
 	it 'Decryption ', (done) ->
-		cacrypt.decrypt(pair.private, bundle)
-			.then (data) ->
-				expect(data).to.equal(env.message)
-				done()	
+		decryptedMsg = cacrypt.decrypt(pair.private, bundle)
+		expect(decryptedMsg).to.equal(message)
+		done()
 		return
 		
 describe '#Signing ', ->
 	it 'Signing ', (done) ->
-		cacrypt.sign(pair.private, bundle.encryptedMessage)
-			.then (data) ->
-				expect(data).to.exist
-				bundle = data
-				done()
+		bundle = cacrypt.sign(pair.private, bundle.encryptedMessage)
+		expect(bundle).to.exist
+		done()
 		return
 		
 describe '#Verifying ', ->		
 	it 'Verifying ', (done) ->
-		cacrypt.verify(pair.public, bundle)
-			.then (data) ->
-				expect(data).to.be.true
-				done()	
-		return				
+		verified = cacrypt.verify(pair.public, bundle)
+		expect(verified).to.be.true
+		done()	
+		return
+				
