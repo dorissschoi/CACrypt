@@ -1,6 +1,6 @@
 {
   "name": "cacrypt",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "A Nodejs package for encrypt/decrypt, sign/verify text",
   "main": "index.js",
   "dependencies": {

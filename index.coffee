@@ -29,8 +29,7 @@ module.exports = (opts = {}) ->
 		}
 
 	decrypt: (prikey, bundle) ->
-		# Decrypt symmetric key with receiver private key
-		# Decrypt message
+		# Decrypt symmetric key with receiver private key and message
 		cipher = forge.cipher.createDecipher opts.algorithm, (forge.pki.privateKeyFromPem(prikey)).decrypt bundle.encryptedKey
 		cipher.start iv:bundle.iv
 		cipher.update forge.util.createBuffer bundle.encryptedMessage
@@ -52,7 +51,6 @@ module.exports = (opts = {}) ->
 		
 	verify: (pubkey, bundle) ->
 		# Verify data with a public key
-		verified = (forge.pki.publicKeyFromPem pubkey).verify (bundle.md).digest().bytes(), bundle.signature
-		return verified		
+		return (forge.pki.publicKeyFromPem pubkey).verify (bundle.md).digest().bytes(), bundle.signature	
 		
 		
