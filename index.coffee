@@ -1,5 +1,6 @@
 forge = require 'node-forge'
 _ = require 'lodash'
+fs = require 'fs'
 
 			
 # opts
@@ -10,6 +11,56 @@ module.exports = (opts = {}) ->
 
 	_.defaults opts, {keySize: 32, algorithm: 'AES-CBC'}
 
+	encryptStream: (pubkey, inputPath, outputPath) ->
+		#read/write file
+		inputStream = fs.createReadStream(inputPath)
+		outputStream = fs.createWriteStream(outputPath)
+		
+		# Generate key		
+		key = forge.random.getBytesSync opts.keySize
+		iv = forge.random.getBytesSync opts.keySize
+		
+		# Encrypt file
+		cipher = forge.cipher.createCipher opts.algorithm, key
+		cipher.start iv:iv
+		
+		inputStream
+			.on 'readable', ->
+				while (chunk = inputStream.read()) != null
+					cipher.update forge.util.createBuffer chunk
+					buf = new Buffer(cipher.output.getBytes(), 'binary')
+					outputStream.write buf
+			.on 'end', ->
+				outputStream.end()
+
+		cipher.finish()
+				
+		return {
+			encryptedKey: (forge.pki.publicKeyFromPem pubkey).encrypt(key)
+			iv: iv
+		}	
+
+	decryptStream: (prikey, bundle, inputPath, outputPath) ->
+		#read/write file
+		inputStream = fs.createReadStream(inputPath)
+		outputStream = fs.createWriteStream(outputPath)
+		
+		cipher = forge.cipher.createDecipher opts.algorithm, (forge.pki.privateKeyFromPem(prikey)).decrypt bundle.encryptedKey
+		cipher.start iv:bundle.iv
+		
+		inputStream
+			.on 'readable', ->
+				while (chunk = inputStream.read()) != null
+  					cipher.update forge.util.createBuffer chunk
+  					buf = new Buffer(cipher.output.getBytes(), 'binary')
+					outputStream.write buf
+			.on 'end', ->
+				outputStream.end()
+
+		if !cipher.finish()
+			throw new Error 'Decryption failed'
+		return true
+			 	
 	encrypt: (pubkey, message) ->
 		# Generate Symmetric key		
 		key = forge.random.getBytesSync opts.keySize
