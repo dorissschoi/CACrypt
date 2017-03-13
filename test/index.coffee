@@ -13,13 +13,6 @@ describe '#Stream Encryption ', ->
 		done()
 		return
 
-describe '#Stream Decryption ', ->		
-	it 'Stream Decryption ', (done) ->
-		decryptedMsg = cacrypt.decryptStream(pair.private, bundle, './test/enfile.txt', './test/resultfile.txt')
-		expect(decryptedMsg).to.exist
-		done()
-		return		
-
 describe '#Encryption ', ->
 	it 'Encryption ', (done) ->
 		bundle = cacrypt.encrypt(pair.public, message)		
